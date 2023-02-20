@@ -311,7 +311,17 @@ class Grid {
         }
     }
 }
-  
-
 
 let grid = new Grid();
+
+$("#help-button").click(function(){
+    $("#modal-container").show()
+})
+
+$('button.modal-exit').click(function(){
+    $("#modal-container").hide()
+})
+
+$("#settings-button").click(function(){
+    $("body").toggleClass("dark");
+})
