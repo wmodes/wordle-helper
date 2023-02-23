@@ -139,37 +139,49 @@ class Grid {
     //  0 if not
     //  -1 if can't add more rows
     incrCell() {
-        this.currentCol++;
-        if (this.currentCol >= this.cols) {
-          this.currentCol = 0;
-          this.currentRow++;
-          if (this.currentRow >= this.rows) {
-            return (-1);
-          } else {
-            return(1);
-          }
+        // check if adding a row is necessary
+        if (this.currentCol + 1 >= this.cols) {
+            // check if there are more rows to add
+            if (this.currentRow + 1 >= this.rows) {
+                // can't add more rows
+                return (-1);
+            } else {
+                // add a new row and reset currentCol to 0
+                this.currentRow++;
+                this.currentCol = 0;
+                return (1);
+            }
+        } else {
+            // increment currentCol
+            this.currentCol++;
+            return (0);
         }
-        return(0)
-      }
+    }
+
+    // returns:
+    //  1 if it added a row
+    //  0 if not
+    //  -1 if can't add more rows
+    decrCell() {
+        // check if removing a row is necessary
+        if (this.currentCol - 1 < 0) {
+            // check if there are rows left to remove
+            if (this.currentRow - 1 < 0) {
+                // can't delete more rows
+                return (-1);
+            } else {
+                // remove a row and reset currentCol to this.cols
+                this.currentRow--;
+                this.currentCol = this.cols - 1;
+                return 1;
+            }
+        } else {
+            // decrement currentCol
+            this.currentCol--
+            return (0);
+        }
+    }
     
-      // returns:
-      //    1 if if removed a row
-      //    0 if not
-      //    -1 if can't del more rows
-      decrCell() {
-        this.currentCol--;
-        if (this.currentCol < 0) {
-          this.currentCol = this.cols - 1;
-          this.currentRow--;
-          if (this.currentRow < 0) {
-            return(-1);
-          } else {
-            return(1);
-          }
-        }
-        return(0)
-      }
-  
     getCell(row, col) {
         return this.cells[row][col];
     }
@@ -248,10 +260,10 @@ class Grid {
                 var letter = this.cells[row][col].letter;
                 switch (state) {
                     case "present":
-                        this.present.push({'letter': letter, 'pos': col})
+                        this.present.push({'letter': letter, 'pos': col});
                         break;
                     case "correct":
-                        this.correct.push({'letter': letter, 'pos': col})
+                        this.correct.push({'letter': letter, 'pos': col});
                         break;
                     // absent, tbd, or empty amount to the same thing
                     default:
@@ -262,14 +274,58 @@ class Grid {
                 }
             }
         }
+        // remove letters marked present from absent list
+        // this accounts for the posibility of double letters
+        for (var i=0;i<this.present.length;i++) {
+            this.absent.remove(this.present[i].letter);
+        }
+        // remove letters marked correct from absent list
+        // this accounts for the posibility of double letters
+        for (var i=0;i<this.correct.length;i++) {
+            this.absent.remove(this.correct[i].letter);
+        }
     }
 
     isCandidate(word) {
         word = word.toUpperCase();
+        let watchword = "FIFTY";
+        let DEBUG = false;
+        if (watchword == word) {
+            DEBUG = true;
+        }
+        // first, check correctly placed letters
+        for (var i=0;i<this.correct.length;i++) {
+            var {letter, pos} = this.correct[i];
+            if (word[pos] != letter) {
+                // looking at candidate word, 
+                // if the known correct pos doesn't have correct letter, 
+                // reject it.
+                return false;
+            }
+        };       
+        // next, check present, but incorrectly placed letters
+        // TODO: This doesn't correctly handle double letters
+        // which are only really revealed when on the same line
+        for (var i=0;i<this.present.length;i++) {
+            var {letter, pos} = this.present[i];
+            // if word doesn't contain letters on pressent list, nope
+            if (!word.includes(letter)) {
+                if (DEBUG) console.log(`${word} rejected: doesn't contain ${letter}`);
+                return false;
+            } 
+            // if word contains letters on present list, but in bad pos, nope
+            else if (word[pos] == letter) {
+                if (DEBUG) console.log(`${word} rejected: contains ${letter} but in wrong position`);
+                return false;
+            }
+        }
+        // finally, we deal with absent letters
         for (var i=0;i<this.absent.length;i++) {
             var letter = this.absent[i];
             // if word contains letters on absent list, nope
+            // doesn't account for repeat letters
             if (word.includes(letter)) {
+                if (DEBUG) console.log(`${word} rejected: contained ${letter}`);
                 return false;
             }
         }
@@ -277,24 +333,16 @@ class Grid {
             var {letter, pos} = this.present[i];
             // if word doesn't contain letters on pressent list, nope
             if (!word.includes(letter)) {
+                if (DEBUG) console.log(`${word} rejected: doesn't contain ${letter}`);
                 return false;
             } 
             // if word contains letters on present list, but in bad pos, nope
             else if (word[pos] == letter) {
+                if (DEBUG) console.log(`${word} rejected: contains ${letter} but in wrong position`);
                 return false;
             }
         }
-        for (var i=0;i<this.correct.length;i++) {
-            var {letter, pos} = this.correct[i];
-            // if word doesn't contain letters on correcct list, nope
-            if (!word.includes(letter)) {
-                return false;
-            } 
-            // if word contains letters on present list, but not in good pos, nope
-            else if (word[pos] !== letter) {
-                return false;
-            }
-        };
+
         return true;
     }
 
@@ -311,6 +359,21 @@ class Grid {
         }
     }
 }
+
+// helpers
+
+Array.prototype.remove = function() {
+    var what, a = arguments, L = a.length, ax;
+    while (L && this.length) {
+        what = a[--L];
+        while ((ax = this.indexOf(what)) !== -1) {
+            this.splice(ax, 1);
+        }
+    }
+    return this;
+};
+
+// Getting things rolling
 
 let grid = new Grid();
 
