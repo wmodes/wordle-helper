@@ -273,6 +273,11 @@ div.nav-filler {
     letter-spacing: 5px;
 }
 
+#dummy {
+    position: fixed;
+    left: -100%;
+}
+
 #modal-container {
     position: absolute;
     width: 100%;

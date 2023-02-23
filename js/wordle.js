@@ -274,75 +274,72 @@ class Grid {
                 }
             }
         }
-        // remove letters marked present from absent list
-        // this accounts for the posibility of double letters
-        for (var i=0;i<this.present.length;i++) {
-            this.absent.remove(this.present[i].letter);
-        }
-        // remove letters marked correct from absent list
-        // this accounts for the posibility of double letters
-        for (var i=0;i<this.correct.length;i++) {
-            this.absent.remove(this.correct[i].letter);
-        }
+        // // remove letters marked present from absent list
+        // // this accounts for the posibility of double letters
+        // for (var i=0;i<this.present.length;i++) {
+        //     this.absent.remove(this.present[i].letter);
+        // }
+        // // remove letters marked correct from absent list
+        // // this accounts for the posibility of double letters
+        // for (var i=0;i<this.correct.length;i++) {
+        //     this.absent.remove(this.correct[i].letter);
+        // }
     }
 
     isCandidate(word) {
         word = word.toUpperCase();
-        let watchword = "FIFTY";
+        let watchword = "";
         let DEBUG = false;
         if (watchword == word) {
             DEBUG = true;
         }
+        let wordArray = word.split('');
         // first, check correctly placed letters
         for (var i=0;i<this.correct.length;i++) {
             var {letter, pos} = this.correct[i];
-            if (word[pos] != letter) {
+            if (wordArray[pos] != letter) {
                 // looking at candidate word, 
                 // if the known correct pos doesn't have correct letter, 
                 // reject it.
                 return false;
             }
-        };       
+            else {
+                // blank correctly guessed positions in wordArray
+                // to take those values out of consideration in next
+                // two checks
+                wordArray[pos] = '';
+            }
+        };
         // next, check present, but incorrectly placed letters
-        // TODO: This doesn't correctly handle double letters
-        // which are only really revealed when on the same line
         for (var i=0;i<this.present.length;i++) {
             var {letter, pos} = this.present[i];
             // if word doesn't contain letters on pressent list, nope
-            if (!word.includes(letter)) {
+            if (!wordArray.includes(letter)) {
                 if (DEBUG) console.log(`${word} rejected: doesn't contain ${letter}`);
                 return false;
             } 
-            // if word contains letters on present list, but in bad pos, nope
-            else if (word[pos] == letter) {
+            // if word contains letters on present list, but in yellow pos, reject it
+            else if (wordArray[pos] == letter) {
                 if (DEBUG) console.log(`${word} rejected: contains ${letter} but in wrong position`);
                 return false;
             }
+        }
+        // if we've gotten here the letter is present in candidate word,
+        // but not in pos marked yellow
+        // so we find the letter and remove it from consideration
+        for (var i=0;i<this.present.length;i++) {
+            wordArray[wordArray.indexOf(letter)] = '';
         }
         // finally, we deal with absent letters
         for (var i=0;i<this.absent.length;i++) {
             var letter = this.absent[i];
             // if word contains letters on absent list, nope
             // doesn't account for repeat letters
-            if (word.includes(letter)) {
+            if (wordArray.includes(letter)) {
                 if (DEBUG) console.log(`${word} rejected: contained ${letter}`);
                 return false;
             }
         }
-        for (var i=0;i<this.present.length;i++) {
-            var {letter, pos} = this.present[i];
-            // if word doesn't contain letters on pressent list, nope
-            if (!word.includes(letter)) {
-                if (DEBUG) console.log(`${word} rejected: doesn't contain ${letter}`);
-                return false;
-            } 
-            // if word contains letters on present list, but in bad pos, nope
-            else if (word[pos] == letter) {
-                if (DEBUG) console.log(`${word} rejected: contains ${letter} but in wrong position`);
-                return false;
-            }
-        }
-
         return true;
     }
 
@@ -376,6 +373,14 @@ Array.prototype.remove = function() {
 // Getting things rolling
 
 let grid = new Grid();
+
+// add a keyboard for mobile users
+
+$(document).on("click",function() {
+    $('#dummy').focus();
+});
+
+// various buttons and such
 
 $("#help-button").click(function(){
     $("#modal-container").show()
