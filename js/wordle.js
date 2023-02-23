@@ -377,7 +377,8 @@ let grid = new Grid();
 // add a keyboard for mobile users
 
 $(document).on("click",function() {
-    $('#dummy').focus();
+    console.log("Here's a keyboard for you!")
+    $('#dummy-input').focus();
 });
 
 // various buttons and such
