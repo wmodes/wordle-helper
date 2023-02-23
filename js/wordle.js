@@ -394,3 +394,52 @@ $('button.modal-exit').click(function(){
 $("#settings-button").click(function(){
     $("body").toggleClass("dark");
 })
+
+tips = [
+    "buy me a gram of cocaine",
+    "buy me a cup of coffee",
+    "buy me a beer",
+    "buy me a discount airline ticket to Hawaii",
+    "buy me a slice of pizza",
+    "buy me a box of chocolates",
+    "buy me a bouquet of flowers",
+    "buy me a ticket to the movies",
+    "buy me a book",
+    "buy me a subscription to a magazine",
+    "buy me a video game",
+    "buy me a new pair of shoes",
+    "buy me a massage",
+    "buy me a bottle of wine",
+    "buy me a piece of artwork",
+    "buy me a fancy dinner",
+    "buy me a new album",
+    "buy me a pair of sunglasses",
+    "buy me a ticket to a concert",
+    "buy me a box of donuts",
+    "buy me a new piece of jewelry",
+    "buy me a plant",
+    "buy me a new phone case",
+    "buy me a yoga class",
+    "buy me a new hat",
+    "buy me a car wash",
+    "buy me a bike lock",
+    "buy me a fancy haircut",
+    "buy me a new handbag",
+    "buy me a cooking class",
+    "buy me a new watch",
+    "buy me a fancy pen",
+    "buy me a new jacket",
+    "buy me a day at the spa",
+    "buy me a new coffee mug",
+    "buy me a new candle",
+    "buy me a box of tea",
+    "buy me a new hat",
+    "buy me a concert ticket",
+    "buy me a new board game",
+    "buy me a new deck"
+]
+
+// select a random tip from the array
+var randomTip = tips[Math.floor(Math.random() * tips.length)];
+$("#coffee-link").html(randomTip);
+    
