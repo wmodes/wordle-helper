@@ -417,7 +417,7 @@ tips = [
     "buy me a ticket to a concert",
     "buy me a box of donuts",
     "buy me a new piece of jewelry",
-    "buy me a plant",
+    "buy me a houseplant",
     "buy me a new phone case",
     "buy me a yoga class",
     "buy me a new hat",
