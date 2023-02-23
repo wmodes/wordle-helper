@@ -143,6 +143,20 @@ div,nav,main {
     font-weight: 700;
 }
 
+@media (max-width: 600px) {
+    /* Styles applied if screen width is less than 600px */
+    #header .title {
+        line-height: 0.80;  
+    }
+    #header .title .smaller {
+        display: block;
+        white-space: nowrap;
+        font-size: 50%;
+        letter-spacing: 0.25em;
+        margin: 0;
+    }
+  }
+
 button.nav-button {
     background: none;
     border: none;
@@ -153,9 +167,15 @@ button#nav-button svg {
     width: 24px;
 }
 
-div.nav-filler {
+#header .nav #nav-filler {
     width: 24px;
     height: 24px;
+}
+
+#header .nav,     #header .fiddles {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
 }
 
 #game {
