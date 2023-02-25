@@ -11,4 +11,4 @@ A full grid wordle-word-aware wordle helper
 <h2>Is this cheating?</h2>
 <p>I don't know. That's for you to decide. My girlfriend thinks it's cheating, but for me, this was just another fun way of solving the puzzle.</p>
 <p>The Full-Grid Wordle Helper was programmed by <a href="https://github.com/wmodes/wordle-helper">Wes Modes</a>.</p>
-<p>Try it out: <a href="https://wmodes.github.io/wordle-helper/">Wordle Helper</a></p>
+<p>Try it out: <a href="https://wmodes.github.io/wordle-helper/">Full-Grid Wordle-Word-Aware Wordle Helper</a></p>
