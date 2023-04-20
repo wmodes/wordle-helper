@@ -6,8 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <title>Full Grid Wordle Helper</title>
     <link rel="stylesheet" href="css/wordle.css">
-    <script src="https://code.jquery.com/jquery-3.6.3.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
+        <script src="https://code.jquery.com/jquery-3.6.3.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
     <script src="js/wordle-words.js"></script>
+    <script src="js/wordle-scores.js"></script>
     <script src="js/wordle.js" DEFER></script>
 </head>
 <body class="dark">
@@ -35,6 +36,7 @@
                 <button id="reset-button">RESET</button>
             </div>
             <div id="hints">
+                <div class="word-list"></div>
             </div>
             <div id="dummy"><input type="text" id="dummy-input"></div>
         </main>
